@@ -26,7 +26,8 @@ view: movies {
     html:
     {% assign words = {{value}} | split: ', ' %}
     {% for word in words %}
-    {{ word }}<br>
+    <a href="https://www.google.com/search?q={{word}}">{{ word }}</a>
+    <br>
     {% endfor %} ;;
   }
 
@@ -42,6 +43,7 @@ view: movies {
   measure: total_awards_nominated_for {
     type: sum
     sql: ${awards_nominated_for} ;;
+    drill_fields: [title, awards_nominated_for, awards_received,director, actors]
   }
 
   measure: average_awards_nominated_for {
@@ -63,6 +65,12 @@ view: movies {
   dimension: country_availability {
     type: string
     sql: ${TABLE}.Country_Availability ;;
+    html:
+    {% assign words = {{value}} | split: ',' %}
+    {% for word in words %}
+    <a href="https://www.google.com/search?q={{word}}">{{ word }}</a>
+    <br>
+    {% endfor %} ;;
   }
 
   dimension: director {
@@ -73,6 +81,9 @@ view: movies {
   dimension: genre {
     type: string
     sql: ${TABLE}.Genre ;;
+    suggestions: ["Comedy", "Romance", "Action", "Drama", "Musical",
+      "War", "Sport", "Fantasy","Animation", "Mystery","Other", "Horror", ""]
+
   }
 
   dimension: hidden_gem_score {
@@ -195,6 +206,10 @@ view: movies {
   dimension: title {
     type: string
     sql: ${TABLE}.Title ;;
+        link: {
+          label: "About The Movie"
+          url: "https://dcl.dev.looker.com/dashboards/1862?Title={{ value }}"
+        }
   }
 
   dimension: tmdb_trailer {
@@ -226,6 +241,18 @@ view: movies {
     type: number
     value_format_name: percent_2
     sql: ${movies.awards_received}/ NULLIF(${movies.total_awards_nominated_for},0) ;;
+
+  }
+
+  measure: total_production_house {
+    type: sum
+    sql: ${production_house};;
+
+  }
+  measure: total_boxoffice{
+    type: sum
+    sql: ${boxoffice};;
+    drill_fields: [title, boxoffice]
 
   }
 }
