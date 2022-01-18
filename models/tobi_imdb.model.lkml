@@ -29,11 +29,40 @@ explore: imdb_people {}
 
 explore: imdb_epsiodes {}
 
-explore: imdb_cast_crew {}
+explore: imdb_roles{
+  view_name: imdb_cast_crew
+}
 
 explore: imdb_ratings {}
 
 explore: rotten_tomatoes_movies {}
+
+explore: Joining_Tconst {
+  view_name: imdb_titles
+
+  join: imdb_ratings {
+    sql_on: ${imdb_ratings.tconst} = ${imdb_titles.tconst} ;;
+    relationship: one_to_one
+    type: left_outer
+  }
+
+  join: imdb_epsiodes {
+    sql_on: ${imdb_epsiodes.tconst}=${imdb_ratings.tconst} ;;
+    relationship: many_to_one
+    type: left_outer
+  }
+
+}
+
+explore: People_In_Movies{
+  view_name:imdb_people
+ join: imdb_cast_crew {
+   sql_on: ${imdb_cast_crew.crew}=${imdb_people.nconst} ;;
+  relationship: one_to_many
+  type: left_outer
+ }
+
+}
 
 explore: movies {
 

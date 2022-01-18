@@ -47,6 +47,7 @@ view: movies {
   measure: average_awards_nominated_for {
     type: average
     sql: ${awards_nominated_for} ;;
+    drill_fields: [title, awards_nominated_for, awards_received,director, actors]
   }
 
   dimension: awards_received {
@@ -218,7 +219,7 @@ view: movies {
 
   measure: count {
     type: count
-    drill_fields: []
+    drill_fields: [title, release_date_date, tags]
   }
 
   measure: percent_of_movies_won{
