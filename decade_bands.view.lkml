@@ -20,13 +20,38 @@ view: decade_bands {
         WHEN (movies.release_date_date  >= DATE('2020-01-01')) THEN '2020s & Beyond'
         ELSE 'Other'
       END
-       AS decade_bands
+       AS decade_bands,
+          CASE
+        WHEN (movies.Genre LIKE '%Horror%') THEN 'Horror'
+        WHEN (movies.Genre LIKE '%History%') THEN 'History'
+        WHEN (movies.Genre LIKE '%Adventure%') THEN 'Adventure'
+        WHEN (movies.Genre LIKE '%Animation%') THEN 'Animation'
+        WHEN (movies.Genre LIKE '%Biography%') THEN 'Biography'
+        WHEN (movies.Genre LIKE '%Documentary%') THEN 'Documentary'
+        WHEN (movies.Genre LIKE '%Reality-TV%') THEN 'Reality-TV'
+        WHEN (movies.Genre LIKE '%Action%') THEN 'Action'
+        WHEN (movies.Genre LIKE '%Comedy%') THEN 'Comedy'
+        WHEN (movies.Genre LIKE '%Crime%') THEN 'Crime'
+        WHEN (movies.Genre LIKE '%Drama%') THEN 'Drama'
+        WHEN (movies.Genre LIKE '%Romance%') THEN 'Romance'
+        WHEN (movies.Genre LIKE '%Family%') THEN 'Family'
+        WHEN (movies.Genre LIKE '%Fantasy%') THEN 'Fantasy'
+        WHEN (movies.Genre LIKE '%Music%' OR movies.Genre LIKE '%Musical%') THEN 'Musical'
+        WHEN (movies.Genre LIKE '%Mystery%') THEN 'Mystery'
+        WHEN (movies.Genre LIKE '%War%') THEN 'War'
+        WHEN (movies.Genre LIKE '%Western%') THEN 'Western'
+        WHEN (movies.Genre LIKE '%Sport%') THEN 'Sport'
+        WHEN (movies.Genre LIKE '%Sci-Fi%') THEN 'Sci-Fi'
+        ELSE 'Other'
+      END
+       AS popular_genre_groups
       FROM `IMDB.movies`
            AS movies
       GROUP BY
           1,
           2,
-          3
+          3,
+          4
       ORDER BY
           2 DESC
        ;;
@@ -51,9 +76,19 @@ view: decade_bands {
   dimension: decade_bands {
     type: string
     sql: ${TABLE}.decade_bands ;;
+    suggestions: ["1900s", "1910s", "1920s", "1930s", "1940s",
+      "1950s", "1960s", "1970s","1980s", "1990s","2000s", "2010s", "2020s","2020s & Beyond"]
+  }
+
+  dimension: popular_genre_groups {
+    type: string
+    sql: ${TABLE}.popular_genre_groups ;;
+    suggestions: ["Comedy", "Romance", "Action", "Drama", "Musical", "Adventure", "Biography", "Documentary",
+      "Reality-TV", "Crime", "Family","War", "Sport", "Fantasy",
+      "Animation", "Mystery", "Reality-TV","Horror", "Western", "Sci-Fi", "History", "Documentary", "Other"]
   }
 
   set: detail {
-    fields: [movies_title, movies_release_date_date, decade_bands]
+    fields: [movies_title, movies_release_date_date, decade_bands, popular_genre_groups]
   }
 }
