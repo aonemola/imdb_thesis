@@ -85,6 +85,8 @@ view: decade_bands {
   dimension: movies_title {
     type: string
     sql: ${TABLE}.movies_title ;;
+    link: {
+    }
   }
 
   set: detail {

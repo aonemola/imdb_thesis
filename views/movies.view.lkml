@@ -147,7 +147,7 @@ view: movies {
   dimension: poster {
     type: string
     sql: ${TABLE}.Poster ;;
-    html: <img src="{{value}}"  height="500"width="400" />    ;;
+    html: <img src="{{value}}"  height="1000"width="1000" />    ;;
 
   }
 
