@@ -79,7 +79,8 @@ explore: movies {
     view_label: "Decades"
     type: left_outer
     relationship: many_to_one
-    sql_on: ${movies.title}=${decade_bands.movies_title};;
+    sql_on: ${movies.title}=${decade_bands.movies_title}
+    AND ${movies.release_date_year} = ${decade_bands.movies_release_date_year};;
   }
 
 
