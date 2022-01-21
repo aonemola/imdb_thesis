@@ -3,6 +3,7 @@ connection: "tobi_project_thesis"
 
 # include all the views
 include: "/views/**/*.view"
+include: "/decade_bands.view.lkml"
 
 # Datagroups define a caching policy for an Explore. To learn more,
 # use the Quick Help panel on the right to see documentation.
@@ -73,12 +74,13 @@ explore: movies {
     sql_on: ${movies.title} = ${ndt_top_rank.title} ;;
 
   }
-  # join: imdb_ratings {
-  #   sql_on: ${movies.imdbid} = ${imdb_ratings.tconst} ;;
-  #   relationship: one_to_one
-  #   type: left_outer
-  # }
 
+  join: decade_bands {
+    view_label: "Decades"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${movies.title}=${decade_bands.movies_title};;
+  }
 
 
 }
